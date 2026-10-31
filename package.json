@@ -1,0 +1,31 @@
+{
+  "name": "mailru-mcp-connector",
+  "version": "0.2.1-rc.0",
+  "description": "Independent self-hosted Mail.ru MCP connector with opt-in sending",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:http": "node src/http.js",
+    "test": "node --test",
+    "check": "node --check src/index.js && node --check src/http.js && node --check src/send.js && node --check src/smtp.js && node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0",
+    "html-to-text": "10.0.1",
+    "imapflow": "2.10.0",
+    "jose": "6.2.14",
+    "mailparser": "3.14.1",
+    "nodemailer": "10.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.4.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  }
+}

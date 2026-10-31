@@ -1,0 +1,45 @@
+# INACTIVE TEMPLATE. Review deployment guidance before installing.
+[Unit]
+Description=Independent owner-only read-only Mail.ru MCP HTTP
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=mailru-mcp
+Group=mailru-mcp
+WorkingDirectory=/opt/mailru-mcp
+EnvironmentFile=/etc/mailru-mcp/http.env
+LoadCredential=mailru-password:/etc/mailru-mcp/credentials/mailru-password
+ExecStart=/usr/bin/python3 /opt/mailru-mcp/scripts/run-with-systemd-credential.py http
+RuntimeDirectory=mailru-mcp-http
+RuntimeDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=20
+KillMode=control-group
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+AmbientCapabilities=
+MemoryHigh=256M
+MemoryMax=384M
+CPUQuota=50%
+TasksMax=64
+LimitCORE=0
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target

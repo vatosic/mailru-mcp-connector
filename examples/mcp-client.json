@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "mailru-self-hosted": {
+      "command": "/absolute/path/to/node",
+      "args": ["/absolute/path/to/mailru-mcp-connector/src/index.js"],
+      "env": {
+        "MAILRU_USER": "REPLACE_WITH_YOUR_MAILRU_ADDRESS",
+        "MAILRU_PASSWORD_FILE": "/absolute/private/path/mailru-app-password",
+        "MAILRU_FOLDERS_JSON": "[\"INBOX\"]",
+        "MAILRU_SEND_ENABLED": "false",
+        "MAILRU_ENABLE_HTTP": "false"
+      }
+    }
+  }
+}
