@@ -5,8 +5,9 @@
 An independent, self-hosted MCP server for a personal Mail.ru mailbox.
 **Not an official Mail.ru, VK or OpenAI product; no affiliation or endorsement
 is claimed.** This repository is not a published ChatGPT directory app and makes
-no promise of directory acceptance. This is a source publication candidate;
-the owner's [license decision](LICENSE-STATUS.md) is still pending.
+no promise of directory acceptance. Source code is available under the
+[MIT license](LICENSE). package.json retains private=true to prevent accidental
+npm publishing; this does not prevent self-hosted installation from GitHub.
 
 Each user runs a separate instance on their own trusted computer/server. The
 mailbox owner keeps 2FA enabled, creates a separate application password and

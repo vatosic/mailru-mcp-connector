@@ -1,6 +1,6 @@
 {
   "name": "mailru-mcp-connector",
-  "version": "0.2.1-rc.0",
+  "version": "0.2.1",
   "description": "Independent self-hosted Mail.ru MCP connector with opt-in sending",
   "scripts": {
     "start": "node src/index.js",
@@ -9,8 +9,8 @@
     "check": "node --check src/index.js && node --check src/http.js && node --check src/send.js && node --check src/smtp.js && node --test"
   },
   "keywords": [],
-  "author": "",
-  "license": "UNLICENSED",
+  "author": "vatosic",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "@modelcontextprotocol/server": "2.4.0",
@@ -27,5 +27,13 @@
   "private": true,
   "engines": {
     "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vatosic/mailru-mcp-connector.git"
+  },
+  "homepage": "https://github.com/vatosic/mailru-mcp-connector#readme",
+  "bugs": {
+    "url": "https://github.com/vatosic/mailru-mcp-connector/issues"
   }
 }
