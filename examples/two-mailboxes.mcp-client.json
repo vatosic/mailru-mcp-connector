@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "mailru-personal": {
+      "command": "/absolute/path/to/node24",
+      "args": [
+        "/absolute/path/to/mailru-mcp-connector/src/index.js"
+      ],
+      "env": {
+        "MAILRU_USER": "REPLACE_WITH_PERSONAL_MAILRU_ADDRESS",
+        "MAILRU_PASSWORD_FILE": "/private/mailru-personal/app-password",
+        "MAILRU_FOLDERS_JSON": "[\"INBOX\"]",
+        "MAILRU_SEND_ENABLED": "false",
+        "MAILRU_ENABLE_HTTP": "false"
+      }
+    },
+    "mailru-vbi": {
+      "command": "/absolute/path/to/node24",
+      "args": [
+        "/absolute/path/to/mailru-mcp-connector/src/index.js"
+      ],
+      "env": {
+        "MAILRU_USER": "v@vbi.ru",
+        "MAILRU_CUSTOM_DOMAIN": "vbi.ru",
+        "MAILRU_PASSWORD_FILE": "/private/mailru-vbi/app-password",
+        "MAILRU_FOLDERS_JSON": "[\"INBOX\"]",
+        "MAILRU_SEND_ENABLED": "false",
+        "MAILRU_ENABLE_HTTP": "false"
+      }
+    }
+  }
+}
