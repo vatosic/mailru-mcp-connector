@@ -2,7 +2,22 @@ import { isAbsolute } from 'node:path';
 import { readFileSync, statSync } from 'node:fs';
 export function loadConfig(env = process.env) {
   const user = env.MAILRU_USER;
-  if (!user || !/^[^\s@]+@(mail\.ru|inbox\.ru|list\.ru|bk\.ru|internet\.ru)$/i.test(user)) throw new Error('CONFIG: valid Mail.ru address required');
+  const customDomain = env.MAILRU_CUSTOM_DOMAIN;
+  // Only a deliberately configured custom domain can use Mail.ru's fixed IMAP/SMTP hosts.
+  // This flag does not validate where the domain is actually hosted.
+  const validCustomDomain = typeof customDomain === 'string' &&
+    customDomain.length <= 253 &&
+    customDomain.split('.').length >= 2 &&
+    customDomain.split('.').every(label => label.length > 0 && label.length <= 63 &&
+      /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(label)) &&
+    /^[a-z]{2,63}$/i.test(customDomain.split('.').at(-1));
+  if (customDomain !== undefined && !validCustomDomain) throw new Error('CONFIG: invalid custom domain');
+  const officialUser = typeof user === 'string' &&
+    /^[^\s@]+@(mail\.ru|inbox\.ru|list\.ru|bk\.ru|internet\.ru)$/i.test(user);
+  const customUser = validCustomDomain && typeof user === 'string' &&
+    user.toLowerCase().endsWith('@' + customDomain.toLowerCase()) &&
+    /^[^\s@]+$/.test(user.slice(0, -customDomain.length - 1));
+  if (!officialUser && !customUser) throw new Error('CONFIG: valid Mail.ru address or opted-in custom domain required');
   if (!!env.MAILRU_APP_PASSWORD === !!env.MAILRU_PASSWORD_FILE) throw new Error('CONFIG: provide exactly one password source');
   let password = env.MAILRU_APP_PASSWORD;
   if (env.MAILRU_PASSWORD_FILE) {
