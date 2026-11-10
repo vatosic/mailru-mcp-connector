@@ -21,6 +21,21 @@ test('configuration fails closed; fixed domains and one credential source',()=>{
  assert.throws(()=>loadConfig({...env,MAILRU_FOLDERS_JSON:'["INBOX\\r\\nLOGOUT"]'}));
  assert.deepEqual(config.folders,['INBOX']);
 });
+test('custom Mail.ru domain requires an explicit exact-domain opt-in',()=>{
+ const corporate={...env,MAILRU_USER:'v@vbi.ru'};
+ assert.throws(()=>loadConfig(corporate),/valid Mail.ru address/);
+ assert.equal(loadConfig({...corporate,MAILRU_CUSTOM_DOMAIN:'vbi.ru'}).user,'v@vbi.ru');
+ assert.equal(loadConfig({...corporate,MAILRU_CUSTOM_DOMAIN:'VBI.RU'}).user,'v@vbi.ru');
+ for(const user of ['v@fakevbi.ru','v@vbi.ru.attacker.test','x@vbi.ru@attacker.test','x@other.ru']) {
+  assert.throws(()=>loadConfig({...corporate,MAILRU_USER:user,MAILRU_CUSTOM_DOMAIN:'vbi.ru'}));
+ }
+ for(const domain of ['', 'vbi.ru.example.invalid', '.vbi.ru', 'vbi..ru', 'vbi_ru', 'vbi.ru/evil']) {
+  if(domain==='vbi.ru.example.invalid') continue; // well-formed but mismatched, tested below
+  assert.throws(()=>loadConfig({...corporate,MAILRU_CUSTOM_DOMAIN:domain}));
+ }
+ assert.throws(()=>loadConfig({...corporate,MAILRU_CUSTOM_DOMAIN:'vbi.ru.example.invalid'}));
+ assert.deepEqual(loadConfig(env).folders,['INBOX']); // existing default still works
+});
 test('secret file permissions and size validated',()=>{
  const d=mkdtempSync(join(tmpdir(),'mailru-test-')); const p=join(d,'secret');
  try {writeFileSync(p,'synthetic-test-only',{mode:0o600});assert.ok(loadConfig({MAILRU_USER:env.MAILRU_USER,MAILRU_PASSWORD_FILE:p}));writeFileSync(p,'x'.repeat(5000));assert.throws(()=>loadConfig({MAILRU_USER:env.MAILRU_USER,MAILRU_PASSWORD_FILE:p}));} finally {rmSync(d,{recursive:true});}
